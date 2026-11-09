@@ -16,7 +16,7 @@ allowed-tools: Read, Write, Edit, Glob, Grep, Bash(uv run:*)
 - 解説のアウトプット（`solutions.odt` または `solutions.docx`）は、`<試験ディレクトリ>` 直下に出す。
 - `intermediates/` と `intermediates/images/` は、なければ作る。
 
-<!-- TODO: 対象の学年・科目・読み手を確定したら、ここに一文で書く（現状は理科・中学生向けを想定） -->
+学年・科目・読み手は、作成依頼に従う。スキルでは特定しない。読み手の指定がなければ、書き始める前にユーザーに確認する（手順 1）。
 
 ## 全体の流れ
 
@@ -46,7 +46,8 @@ allowed-tools: Read, Write, Edit, Glob, Grep, Bash(uv run:*)
   図・表・設問番号・取り消し線など、読み取りにくい箇所は推測せず、ユーザーに確認する。
 - **解説の対象と粒度は、問題から判断できないときは、書き始める前にユーザーに問い合わせる。**
   - 対象：どの大問・設問を解説するか。依頼に「すべて」などの指定がなく、PDF に複数の大問があるとき。
-  - 粒度：読み手の学年、途中式をどこまで書くか、別解や発展を入れるか、図をどこまで作るか。依頼や既存の解説から決められないとき。
+  - 読み手：学年と前提知識。依頼にも、試験ディレクトリの既存の解説にも指定がなければ、必ず聞く。推測や既定値で進めない。
+  - 粒度：途中式をどこまで書くか、別解や発展を入れるか、図をどこまで作るか。依頼や既存の解説から決められないとき。
   - 問い合わせは、選択肢を添えて 1 回にまとめる。推奨があれば先頭に書く。
   - 依頼から判断できることは、聞かずに進める。聞くのは、答えで成果物が大きく変わるときだけにする。
 
@@ -71,7 +72,11 @@ allowed-tools: Read, Write, Edit, Glob, Grep, Bash(uv run:*)
 - `intermediates/a<番号>.md` に書く。構成と文体は [references/explanation-style.md](references/explanation-style.md) に従う。
 - 計算問題は途中式を省略しない。数値は問題文・表から取り直して検算する。
 - 数式と記号は原本の記法を忠実に再現する。単純な式は Unicode の記号で、分数や根号などは行頭の `$$ ... $$` で書く（ODT・DOCX への変換時に自動で画像になる）。方針は [references/formulas.md](references/formulas.md)。
-- 日本語の文章規範は `japanese-tech-writing` と `natural-japanese` のスキルを参照する。
+- 日本語の文章規範は `japanese-tech-writing` と `natural-japanese` のスキルを参照する。使えない環境では、[references/explanation-style.md](references/explanation-style.md) の「文体」だけに従う。
+- 書き終えたら、`natural-japanese` など日本語を整えるスキルが使える環境では、解説の文章の推敲に使ってよい。使えない環境では、この工程を省く。
+  - 推敲で変えてよいのは、文の言い回しと並び順だけ。数式・数値・用語・見出しの構成・`$$ ... $$` の記法は変えない。
+  - です・ます調と短い文を保つ。読み手の水準（[references/explanation-style.md](references/explanation-style.md) の「文体」）を超えて、硬い文体にしない。
+  - 推敲のあと、数値と答えが変わっていないかを問題の書き起こしと見比べる。
 
 ### 4. 図を作る
 

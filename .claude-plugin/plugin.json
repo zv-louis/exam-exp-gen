@@ -1,6 +1,6 @@
 {
   "name": "exam-exp-gen",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "license": "MIT",
   "description": "試験問題（PDF・画像・テキスト）を読み込み、解説を markdown / ODT / DOCX で生成する",
   "keywords": ["exam", "explanation", "japanese", "odt", "docx"]
