@@ -6,12 +6,15 @@
   - [1. 概要](#1-概要)
   - [2. 機能](#2-機能)
   - [3. 実行環境](#3-実行環境)
-  - [4. インストール/使用方法](#4-インストール使用方法)
+  - [4. インストール](#4-インストール)
     - [4-1. マーケットプレイスからインストールする](#4-1-マーケットプレイスからインストールする)
-    - [4-2. 手元のディレクトリから読み込む](#4-2-手元のディレクトリから読み込む)
-    - [4-3. スキルを使う](#4-3-スキルを使う)
-    - [4-4. 作業の流れ](#4-4-作業の流れ)
-  - [5. 成果物の置き場所](#5-成果物の置き場所)
+    - [4-2. npx skills でインストールする](#4-2-npx-skills-でインストールする)
+    - [4-3. npx openskills でインストールする](#4-3-npx-openskills-でインストールする)
+    - [4-4. 手元のディレクトリから読み込む](#4-4-手元のディレクトリから読み込む)
+  - [5. 使い方](#5-使い方)
+    - [5-1. スキルを使う](#5-1-スキルを使う)
+    - [5-2. 作業の流れ](#5-2-作業の流れ)
+    - [5-3. 成果物の置き場所](#5-3-成果物の置き場所)
   - [6. ライセンス](#6-ライセンス)
 
 ## 1. 概要
@@ -28,7 +31,7 @@ Claude が従う手順は [SKILL.md](skills/exam-exp-gen/SKILL.md) にありま�
 ## 2. 機能
 
 - スキャン PDF をページ画像にして問題を読み、`q<番号>.md` に書き起こします。
-- 解説を `a<番号>.md` に書きます。途中式、検算、注意点がつきます。
+- 解説を `a<番号>.md` に書きます。途中式、検算、注意点が付きます。
 - 解説に要る図を作ります。原本からの切り出し、書き込み、グラフ、模式図に対応しています。
 - 数式を Unicode 記号と `$$ ... $$` で書き、文書に描画します。
 - 解説を 1 つの文書（`solutions.odt` または `solutions.docx`）にまとめます。
@@ -70,7 +73,7 @@ uv run skills/exam-exp-gen/scripts/fig.py --env
 | `EXAM_EXP_GEN_MONO_FONT` | コードブロックのフォント名 |
 | `EXAM_EXP_GEN_SOFFICE` | LibreOffice（soffice）の実行ファイルのパス |
 
-## 4. インストール/使用方法
+## 4. インストール
 
 ### 4-1. マーケットプレイスからインストールする
 
@@ -84,7 +87,43 @@ Claude Code の中で、次のコマンドを実行してください。
 
 マーケットプレイスを追加済みなら、2 行目だけで済みます。
 
-### 4-2. 手元のディレクトリから読み込む
+### 4-2. npx skills でインストールする
+
+[skills](https://github.com/vercel-labs/skills) CLI で、スキル `exam-exp-gen` だけを入れられます。Node.js が要ります。
+Claude Code のほか、Codex や Cursor など、対応するエージェントにも入れられます。
+
+```bash
+# 現在のプロジェクトに入れる
+npx skills add zv-louis/exam-exp-gen
+
+# 全プロジェクトで使えるように、ユーザー領域に入れる
+npx skills add zv-louis/exam-exp-gen --global
+
+# Claude Code だけに入れる
+npx skills add zv-louis/exam-exp-gen --agent claude-code
+```
+
+- 入れる前にスキルの一覧だけ見るには、`--list` を付けます。
+- 更新は `npx skills update`、削除は `npx skills remove exam-exp-gen` です。
+- この方法で入れたスキルは、`/exam-exp-gen` で呼び出します（プラグイン名の接頭辞は付きません）。
+
+### 4-3. npx openskills でインストールする
+
+[openskills](https://github.com/numman-ali/openskills) でも入れられます。
+Claude Code 形式のスキルを、ほかのエージェントでも使えるようにするツールです。Node.js が要ります。
+
+```bash
+# 現在のプロジェクト（./.claude/skills）に入れる
+npx openskills install zv-louis/exam-exp-gen
+
+# ユーザー領域（~/.claude/skills）に入れる
+npx openskills install zv-louis/exam-exp-gen --global
+```
+
+- Claude Code 以外のエージェントで使うときは、`--universal` を付けて `.agent/skills` に入れ、`npx openskills sync` で `AGENTS.md` にスキルの一覧を書き出します。
+- 入れたスキルの確認は `npx openskills list`、更新は `npx openskills update` です。
+
+### 4-4. 手元のディレクトリから読み込む
 
 開発中のプラグインを試すときは、このプロジェクトのディレクトリを指定して、Claude Code を起動します。
 
@@ -92,7 +131,9 @@ Claude Code の中で、次のコマンドを実行してください。
 claude --plugin-dir <このプロジェクトのパス>
 ```
 
-### 4-3. スキルを使う
+## 5. 使い方
+
+### 5-1. スキルを使う
 
 試験問題の PDF や画像を置いたディレクトリ（試験ディレクトリ）で、Claude Code に依頼します。
 
@@ -104,7 +145,9 @@ claude --plugin-dir <このプロジェクトのパス>
 
 スキルは `/exam-exp-gen:exam-exp-gen` で直接呼び出すこともできます。
 
-### 4-4. 作業の流れ
+### 5-2. 作業の流れ
+
+スキルでは以下の手順で作業を進めます。  
 
 1. **入力を確認する**：試験ディレクトリと、その中の PDF・画像を特定します。
 2. **問題を書き起こす**：`intermediates/q<番号>.md` を作ります。
@@ -112,7 +155,7 @@ claude --plugin-dir <このプロジェクトのパス>
 4. **図を作る**：必要な図を `intermediates/images/` に作り、md から参照します。
 5. **ODT または DOCX に変換する**（任意）：試験ディレクトリ直下に `.odt` か `.docx` を作ります。
 
-## 5. 成果物の置き場所
+### 5-3. 成果物の置き場所
 
 試験ごとに 1 つのディレクトリを作り、その中に置きます。
 
