@@ -1,6 +1,8 @@
 ---
 name: exam-exp-gen
-description: 試験問題（PDF・画像・テキスト）を読み込み、解説を markdown で生成するスキル。作成途中の問題の書き起こし（q*.md）と解説（a*.md）は intermediates/、画像類は intermediates/images/ に置き、解説のアウトプット（ODT または DOCX）は試験ディレクトリ直下に出す。「この問題の解説を作って」「試験問題を解説して」「過去問の解説を書いて」といった依頼で使う。
+description: >
+  試験問題（PDF・画像・テキスト）を読み込み、解説を markdown で生成するスキル。
+  「この問題の解説を作って」「試験問題を解説して」「過去問の解説を書いて」といった依頼で使う。
 allowed-tools: Read, Write, Edit, Glob, Grep, Bash(uv run:*)
 ---
 
